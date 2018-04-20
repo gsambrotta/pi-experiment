@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Socket connection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io.connect('http://localhost:5000');
+    socket.on('news', function (data) {
+      console.log(data);
+      socket.emit('my other event', { my: 'data' });
+    });
+
+    function readDeviceOrientation() {
+      switch (window.orientation) {
+        case 0:
+
+          // Portrait
+          console.log('potrait')
+          break;
+
+        case 180:
+
+          // Portrait (Upside-down)
+          console.log('Portrait (Upside-down)')
+          break;
+
+        case -90:
+
+          // Landscape (Clockwise)
+          console.log('Landscape (Clockwise)')
+          break;
+
+        case 90:
+
+          // Landscape  (Counterclockwise)
+          console.log('Landscape (Counterclockwise)')
+          break;
+      }
+    }
+
+    if (window.onorientationchange) {
+      window.onorientationchange = readDeviceOrientation
+
+      socket.emit('orientation', window.onorientationchange);
+    }
+
+    var socket = io();
+    socket.on('orientation', function (orientation) {
+      console.log(orientation);
+    });
+
+  </script>
+</head>
+
+<body>
+
+  <h1>Let's go!</h1>
+
+</body>
+
+</html>
