@@ -7,59 +7,59 @@
   <title>Socket connection</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="/socket.io/socket.io.js"></script>
-  <script>
-    var socket = io.connect('http://localhost:5000');
-    socket.on('news', function (data) {
-      console.log(data);
-      socket.emit('my other event', { my: 'data' });
-    });
-
-    function readDeviceOrientation() {
-      switch (window.orientation) {
-        case 0:
-
-          // Portrait
-          console.log('potrait')
-          break;
-
-        case 180:
-
-          // Portrait (Upside-down)
-          console.log('Portrait (Upside-down)')
-          break;
-
-        case -90:
-
-          // Landscape (Clockwise)
-          console.log('Landscape (Clockwise)')
-          break;
-
-        case 90:
-
-          // Landscape  (Counterclockwise)
-          console.log('Landscape (Counterclockwise)')
-          break;
-      }
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <style>
+    .garden {
+      position: relative;
+      width : 200px;
+      height: 200px;
+      border: 5px solid #CCC;
+      border-radius: 10px;
     }
 
-    if (window.onorientationchange) {
-      window.onorientationchange = readDeviceOrientation
-
-      socket.emit('orientation', window.onorientationchange);
+    body {
+      width: 100%;
+      height: 100vh;
     }
 
-    var socket = io();
-    socket.on('orientation', function (orientation) {
-      console.log(orientation);
-    });
-
-  </script>
+    .ball {
+      position: absolute;
+      top   : 90px;
+      left  : 90px;
+      width : 200px;
+      height: 200px;
+      background: green;
+      border-radius: 100%;
+    }
+  </style>
 </head>
 
 <body>
 
-  <h1>Let's go!</h1>
+  <h1 id='title'>Let's go!</h1>
 
+  <div class="ball"></div>
+
+  <script>
+    var socketTwo = io();
+
+    // example
+    document.getElementById("title").addEventListener("mouseenter", mouseEnter);
+    document.getElementById("title").addEventListener("mouseleave", mouseLeave);
+
+    function mouseEnter(event) {
+      socketTwo.emit('mouseenter', event);
+      document.getElementById("title").style.color = "red";
+    }
+    socketTwo.on('return event', function(msg){
+      $('body').append($('<p>').text('this is the event', msg))
+    })
+
+    function mouseLeave() {
+      document.getElementById("title").style.color = "black";
+    }
+  </script>
+  <script src="../index.js"></script>
 </body>
 
 </html>
